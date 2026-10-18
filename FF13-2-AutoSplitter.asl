@@ -57,7 +57,13 @@ init
 
 startup
 {
-	settings.Add("chaosSet", false, "Chaos Bahamut 1 & 2");
+	// 計測ごとの状態。スクリプト再読み込み時は onStart が呼ばれないため、ここでも定義する
+	// Per-run state; also defined here because a script reload does not call onStart
+	vars.chaosCount = 0;
+	vars.chaosTime = 0u;
+	
+	settings.Add("chaosSet", false, "Chaos Bahamut 1");
+	settings.Add("chaosBSet", false, "Chaos Bahamut 2");
 	settings.Add("gogmagogASet", true, "Gogmagog Alpha");
 	settings.Add("gogmagogBSet", true, "Gogmagog Beta");
 	settings.Add("paradoxSet", true, "Paradox Alpha");
@@ -77,7 +83,7 @@ startup
 	settings.Add("caius2Set", true, "Caius: Beyond");
 	settings.Add("gogmagog3Set", true, "Gogmagog Gamma");
 	settings.Add("pacosSet", true, "Pacos Twins");
-	settings.Add("chaos2Set", false, "Chaos Bahamut");
+	settings.Add("chaos2Set", false, "Chaos Bahamut 3");
 	settings.Add("caius3Set", false, "Caius: Deck");
 	settings.Add("caius4Set", false, "Caius: Beach");
 
@@ -98,6 +104,7 @@ onStart
 	// リセット前に予約されたSplitが新しい計測で実行されないよう破棄する
 	// Drop a split armed before the timer was reset so it cannot fire in the new run
 	vars.time0 = uint.MaxValue;
+	vars.chaosCount = 0;
 }
 
 split
@@ -105,9 +112,14 @@ split
 	// 撃破・捕獲を検知すると vars.time0 にSplitを予約し、リザルト画面を抜けた時にSplitする
 	// A kill or capture arms a split in vars.time0; it fires when the results screen closes
 	
-	// 序章の Chaos Bahamut（前半・後半とも戦闘ID 915000）
-	// Prologue Chaos Bahamut (both halves report battle id 915000)
-	if (settings["chaosSet"] && old.target != 915000 && current.target == 915000) vars.time0 = current.time;
+	// 序章の Chaos Bahamut は前半・後半とも戦闘ID 915000 なので出現順で1/2を区別する（10秒以内の再出現は無視）
+	// Prologue Chaos Bahamut: both halves report battle id 915000, so tell 1 and 2 apart by order (ignore repeats within 10 s)
+	if (old.target != 915000 && current.target == 915000 && (vars.chaosCount == 0 || current.time - vars.chaosTime > 10000))
+	{
+		vars.chaosCount++;
+		vars.chaosTime = current.time;
+		if ((vars.chaosCount == 1 && settings["chaosSet"]) || (vars.chaosCount == 2 && settings["chaosBSet"])) vars.time0 = current.time;
+	}
 	
 	// 図鑑の撃破数が 0 から増えた戦闘。Splitは2.3秒後以降
 	// First kill recorded in the bestiary; the split may fire 2.3 s later
@@ -122,12 +134,12 @@ split
 		|| (current.sp3 == id && old.sp3 != id) || (current.sp4 == id && old.sp4 != id);
 	if (settings["caitSet"] && gotSpoil("mcr_k273")) vars.time0 = current.time + 2300;
 	if (settings["nektonSet"] && gotSpoil("mcr_k270")) vars.time0 = current.time + 2300;
-
+	
 	if (settings["atlasSet"] && old.atlas == 0 && current.atlas != 0) vars.time0 = current.time + 2300;
 	if (settings["aloeidaiSet"] && old.aloeidai == 0 && current.aloeidai != 0) vars.time0 = current.time + 2300;
 	
 	if (settings["gahongasSet"] && gotSpoil("mcr_k442")) vars.time0 = current.time + 2300;
-
+	
 	if (settings["royalSet"] && old.royal == 0 && current.royal != 0) vars.time0 = current.time + 2300;
 	if (settings["miniflanSet"] && old.miniflan == 0 && current.miniflan != 0) vars.time0 = current.time + 2300;
 	if (settings["goblinSet"] && old.goblin == 0 && current.goblin != 0) vars.time0 = current.time + 2300;
