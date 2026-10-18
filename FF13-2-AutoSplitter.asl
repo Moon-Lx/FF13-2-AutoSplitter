@@ -93,6 +93,13 @@ start
 	}
 }
 
+onStart
+{
+	// リセット前に予約されたSplitが新しい計測で実行されないよう破棄する
+	// Drop a split armed before the timer was reset so it cannot fire in the new run
+	vars.time0 = uint.MaxValue;
+}
+
 split
 {
 	// 撃破・捕獲を検知すると vars.time0 にSplitを予約し、リザルト画面を抜けた時にSplitする
@@ -108,32 +115,19 @@ split
 	if (settings["gogmagogBSet"] && old.gogmagog2 == 0 && current.gogmagog2 != 0) vars.time0 = current.time + 2300;
 	if (settings["paradoxSet"] && old.paradox == 0 && current.paradox != 0) vars.time0 = current.time + 2300;
 	
-	// 戦利品にモンスタークリスタルが出た戦闘
-	// Battles whose spoils include the monster crystal
-	if (settings["caitSet"])
-	{
-		if (current.sp1 == "mcr_k273" && old.sp1 != "mcr_k273") vars.time0 = current.time + 2300;
-		if (current.sp2 == "mcr_k273" && old.sp2 != "mcr_k273") vars.time0 = current.time + 2300;
-		if (current.sp3 == "mcr_k273" && old.sp3 != "mcr_k273") vars.time0 = current.time + 2300;
-	}
-	if (settings["nektonSet"])
-	{
-		if (current.sp1 == "mcr_k270" && old.sp1 != "mcr_k270") vars.time0 = current.time + 2300;
-		if (current.sp2 == "mcr_k270" && old.sp2 != "mcr_k270") vars.time0 = current.time + 2300;
-		if (current.sp3 == "mcr_k270" && old.sp3 != "mcr_k270") vars.time0 = current.time + 2300;
-	}
-	
+	// 戦利品(4枠)にモンスタークリスタルが新しく出た戦闘
+	// Battles whose spoils (4 slots) newly include the monster crystal
+	Func<string, bool> gotSpoil = id =>
+		(current.sp1 == id && old.sp1 != id) || (current.sp2 == id && old.sp2 != id)
+		|| (current.sp3 == id && old.sp3 != id) || (current.sp4 == id && old.sp4 != id);
+	if (settings["caitSet"] && gotSpoil("mcr_k273")) vars.time0 = current.time + 2300;
+	if (settings["nektonSet"] && gotSpoil("mcr_k270")) vars.time0 = current.time + 2300;
+
 	if (settings["atlasSet"] && old.atlas == 0 && current.atlas != 0) vars.time0 = current.time + 2300;
 	if (settings["aloeidaiSet"] && old.aloeidai == 0 && current.aloeidai != 0) vars.time0 = current.time + 2300;
 	
-	if (settings["gahongasSet"])
-	{
-		if (current.sp1 == "mcr_k442" && old.sp1 != "mcr_k442") vars.time0 = current.time + 2300;
-		if (current.sp2 == "mcr_k442" && old.sp2 != "mcr_k442") vars.time0 = current.time + 2300;
-		if (current.sp3 == "mcr_k442" && old.sp3 != "mcr_k442") vars.time0 = current.time + 2300;
-		if (current.sp4 == "mcr_k442" && old.sp4 != "mcr_k442") vars.time0 = current.time + 2300;
-	}
-	
+	if (settings["gahongasSet"] && gotSpoil("mcr_k442")) vars.time0 = current.time + 2300;
+
 	if (settings["royalSet"] && old.royal == 0 && current.royal != 0) vars.time0 = current.time + 2300;
 	if (settings["miniflanSet"] && old.miniflan == 0 && current.miniflan != 0) vars.time0 = current.time + 2300;
 	if (settings["goblinSet"] && old.goblin == 0 && current.goblin != 0) vars.time0 = current.time + 2300;
