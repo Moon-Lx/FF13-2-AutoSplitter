@@ -86,6 +86,7 @@ startup
 	settings.Add("chaos2Set", false, "Chaos Bahamut 3");
 	settings.Add("caius3Set", false, "Caius: Deck");
 	settings.Add("caius4Set", false, "Caius: Beach");
+	settings.Add("jetSet", true, "Jet Bahamut (Final)");
 
 }
 
@@ -155,7 +156,7 @@ split
 	
 	// Jet Bahamut（最終Split、戦闘ID 673000）
 	// Jet Bahamut (final split, battle id 673000)
-	if (old.target != 673000 && current.target == 673000) vars.time0 = current.time + 2300;
+	if (settings["jetSet"] && old.target != 673000 && current.target == 673000) vars.time0 = current.time + 2300;
 	
 	if (settings["caius3Set"] && old.caius3 == 0 && current.caius3 != 0) vars.time0 = current.time + 2300;
 	if (settings["caius4Set"] && old.caius4 == 0 && current.caius4 != 0) vars.time0 = current.time + 2300;
