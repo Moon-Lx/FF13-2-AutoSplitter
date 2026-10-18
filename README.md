@@ -40,31 +40,31 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 
 | 設定名 | 検出する内容 | スプリットのタイミング | 既定 |
 |---|---|---|---|
-| Chaos Bahamut 1 | 序章のカオス・バハムート戦（前半） | リザルト画面を抜けた時 | OFF |
-| Chaos Bahamut 2 | 序章のカオス・バハムート戦（後半） | リザルト画面を抜けた時 | OFF |
+| Chaos Bahamut 1 | 序章のカオス・バハムート戦（前半） | リザルト画面を抜けた時 | ON |
+| Chaos Bahamut 2 | 序章のカオス・バハムート戦（後半） | リザルト画面を抜けた時 | ON |
 | Gogmagog Alpha | 撃破 | リザルト画面を抜けた時 | ON |
 | Gogmagog Beta | 撃破 | リザルト画面を抜けた時 | ON |
 | Paradox Alpha | 撃破 | リザルト画面を抜けた時 | ON |
-| Monster Crystal Tutorial | チュートリアルでのモンスター捕獲（`mcr_k273`） | リザルト画面を抜けた時 | OFF |
+| Monster Crystal Tutorial | チュートリアルでのモンスター捕獲（`mcr_k273`） | リザルト画面を抜けた時 | ON |
 | Capture Nekton | 捕獲（`mcr_k270`） | リザルト画面を抜けた時 | OFF |
 | Atlas | 撃破 | リザルト画面を抜けた時 | ON |
 | Aloeidai | 撃破 | リザルト画面を抜けた時 | ON |
-| Capture Gahongas | 捕獲（`mcr_k442`） | リザルト画面を抜けた時 | OFF |
+| Capture Gahongas | 捕獲（`mcr_k442`） | リザルト画面を抜けた時 | ON |
 | Royal Ripeness | 撃破 | リザルト画面を抜けた時 | ON |
 | Miniflans 1 | 撃破 | リザルト画面を抜けた時 | ON |
 | Goblin Fragment | 撃破 | リザルト画面を抜けた時 | ON |
 | Faeryl | 撃破 | リザルト画面を抜けた時 | ON |
 | Mutantomato | 撃破 | リザルト画面を抜けた時 | ON |
 | Caius: Oerba | 撃破 | リザルト画面を抜けた時 | ON |
-| Capture Chichu | キチューの入手（モーグリ投げ） | **入手した瞬間** | OFF |
+| Capture Chichu | キチューの入手（モーグリ投げ） | **入手した瞬間** | ON |
 | Zenobia | 撃破 | リザルト画面を抜けた時 | ON |
 | Fal'cie Adam | 撃破 | リザルト画面を抜けた時 | ON |
 | Caius: Beyond | 撃破 | リザルト画面を抜けた時 | ON |
 | Gogmagog Gamma | 撃破 | リザルト画面を抜けた時 | ON |
 | Pacos Twins | 撃破 | リザルト画面を抜けた時 | ON |
-| Chaos Bahamut 3 | 終盤のカオス・バハムート戦 | リザルト画面を抜けた時 | OFF |
-| Caius: Deck | カイアス戦（アカデミア） | リザルト画面を抜けた時 | OFF |
-| Caius: Beach | カイアス戦（ヴァルハラ） | リザルト画面を抜けた時 | OFF |
+| Chaos Bahamut 3 | 終盤のカオス・バハムート戦 | リザルト画面を抜けた時 | ON |
+| Caius: Deck | カイアス戦（アカデミア） | リザルト画面を抜けた時 | ON |
+| Caius: Beach | カイアス戦（ヴァルハラ） | リザルト画面を抜けた時 | ON |
 | Jet Bahamut (Final) | 最終戦（計測終了） | リザルト画面を抜けた時 | ON |
 
 - 「撃破」はモンスター図鑑に初めて撃破が記録された戦闘、「捕獲」は戦利品に該当するモンスタークリスタルが出た戦闘です。
@@ -78,7 +78,7 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 - 序章の途中から手動でタイマーを開始すると、Chaos Bahamut 1 / 2 の判定がずれることがあります。
 - 撃破前のセーブをロードして同じボスを倒し直すと、もう一度スプリットします。
 - タイマーをリセットすると、実行待ちのスプリットは破棄されます。
-- 元版の設定ID（`chaosSet` など）はそのまま使っているので、元版の設定は引き継がれます。新しい項目（Chaos Bahamut 2 / Capture Chichu）は既定でOFFなので、必要に応じてチェックしてください。
+- 元版の設定ID（`chaosSet` など）はそのまま使っているので、LiveSplit に保存済みの設定は引き継がれます。既定値は Capture Nekton 以外すべて ON です（既定値は、保存済みの値がない項目にだけ適用されます）。
 - 動作確認: Steam 版（日本語）＋ FF13Fix 1.6.4。最新版の LiveSplit を推奨します（`onStart` アクションを使用）。
 
 ### 技術メモ（メンテナ向け）
@@ -103,6 +103,7 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 - 「Capture Chichu」（キチュー入手）を追加
 - 「Chaos Bahamut 1 & 2」を「Chaos Bahamut 1」「Chaos Bahamut 2」に分割し、終盤のものを「Chaos Bahamut 3」に改名
 - 最終スプリット（Jet Bahamut）を設定項目として表示
+- スプリットの既定値を Capture Nekton 以外すべて ON に変更
 - セーブのロード直後に誤ってスプリットする不具合を修正
 - タイマーのリセット後に、実行待ちだったスプリットが誤って実行される不具合を修正
 - 捕獲の判定で戦利品の4枠目を見ていなかった不具合を修正
@@ -148,31 +149,31 @@ In settings order (route order).
 
 | Setting | What is detected | When it splits | Default |
 |---|---|---|---|
-| Chaos Bahamut 1 | Prologue Chaos Bahamut, first half | When the results screen closes | OFF |
-| Chaos Bahamut 2 | Prologue Chaos Bahamut, second half | When the results screen closes | OFF |
+| Chaos Bahamut 1 | Prologue Chaos Bahamut, first half | When the results screen closes | ON |
+| Chaos Bahamut 2 | Prologue Chaos Bahamut, second half | When the results screen closes | ON |
 | Gogmagog Alpha | Kill | When the results screen closes | ON |
 | Gogmagog Beta | Kill | When the results screen closes | ON |
 | Paradox Alpha | Kill | When the results screen closes | ON |
-| Monster Crystal Tutorial | Tutorial capture (`mcr_k273`) | When the results screen closes | OFF |
+| Monster Crystal Tutorial | Tutorial capture (`mcr_k273`) | When the results screen closes | ON |
 | Capture Nekton | Capture (`mcr_k270`) | When the results screen closes | OFF |
 | Atlas | Kill | When the results screen closes | ON |
 | Aloeidai | Kill | When the results screen closes | ON |
-| Capture Gahongas | Capture (`mcr_k442`) | When the results screen closes | OFF |
+| Capture Gahongas | Capture (`mcr_k442`) | When the results screen closes | ON |
 | Royal Ripeness | Kill | When the results screen closes | ON |
 | Miniflans 1 | Kill | When the results screen closes | ON |
 | Goblin Fragment | Kill | When the results screen closes | ON |
 | Faeryl | Kill | When the results screen closes | ON |
 | Mutantomato | Kill | When the results screen closes | ON |
 | Caius: Oerba | Kill | When the results screen closes | ON |
-| Capture Chichu | Obtaining Chichu (Moogle Throw) | **The moment it is obtained** | OFF |
+| Capture Chichu | Obtaining Chichu (Moogle Throw) | **The moment it is obtained** | ON |
 | Zenobia | Kill | When the results screen closes | ON |
 | Fal'cie Adam | Kill | When the results screen closes | ON |
 | Caius: Beyond | Kill | When the results screen closes | ON |
 | Gogmagog Gamma | Kill | When the results screen closes | ON |
 | Pacos Twins | Kill | When the results screen closes | ON |
-| Chaos Bahamut 3 | Late-game Chaos Bahamut | When the results screen closes | OFF |
-| Caius: Deck | Caius (Academia) | When the results screen closes | OFF |
-| Caius: Beach | Caius (Valhalla) | When the results screen closes | OFF |
+| Chaos Bahamut 3 | Late-game Chaos Bahamut | When the results screen closes | ON |
+| Caius: Deck | Caius (Academia) | When the results screen closes | ON |
+| Caius: Beach | Caius (Valhalla) | When the results screen closes | ON |
 | Jet Bahamut (Final) | Final battle (end of the run) | When the results screen closes | ON |
 
 - "Kill" means the battle in which the bestiary first records a kill; "Capture" means the battle whose spoils include that monster crystal.
@@ -186,7 +187,7 @@ In settings order (route order).
 - If you start the timer manually in the middle of the prologue, Chaos Bahamut 1 / 2 may be off by one.
 - Loading a save from before a boss and killing it again splits again.
 - Resetting the timer discards any pending split.
-- The original setting ids (`chaosSet` and so on) are kept, so settings saved with the original script still apply. The new items (Chaos Bahamut 2 / Capture Chichu) are OFF by default; tick them if your route uses them.
+- The original setting ids (`chaosSet` and so on) are kept, so settings already saved in LiveSplit still apply. Every split except Capture Nekton is ON by default (defaults only apply to items without a saved value).
 - Tested with the Steam version (Japanese) and FF13Fix 1.6.4. A recent LiveSplit is recommended (the script uses the `onStart` action).
 
 ### Technical notes (for maintainers)
@@ -211,6 +212,7 @@ In settings order (route order).
 - Added "Capture Chichu" (obtaining Chichu)
 - Split "Chaos Bahamut 1 & 2" into "Chaos Bahamut 1" and "Chaos Bahamut 2", and renamed the late-game one to "Chaos Bahamut 3"
 - The final split (Jet Bahamut) is now shown as a setting
+- Every split except Capture Nekton is now ON by default
 - Fixed false splits right after loading a save
 - Fixed a pending split firing after the timer was reset
 - Fixed captures ignoring the fourth spoils slot
