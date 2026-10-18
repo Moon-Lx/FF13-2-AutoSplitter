@@ -40,6 +40,10 @@ state("ffxiii2img")
 	
 	int chaos			: "ffxiii2img.exe", 0x04D51F64, 0x80C;
 	
+	// キチュー入手フラグ（ビット3）。モーグリ投げで入手した瞬間に立つ
+	// Chichu obtained flag (bit 3); set the moment it is obtained by the Moogle Throw
+	byte chichu			: "ffxiii2img.exe", 0x04D51F64, 0x1451;
+	
 	// 直近の戦闘リザルトの戦利品（アイテムID）
 	// Spoils of the latest battle results (item ids)
 	string16 sp1				: "ffxiii2img.exe", 0x04D51BC4, 0x78;
@@ -78,6 +82,7 @@ startup
 	settings.Add("faerylSet", true, "Faeryl");
 	settings.Add("mutantSet", true, "Mutantomato");
 	settings.Add("caius1Set", true, "Caius: Oerba");
+	settings.Add("chichuSet", false, "Capture Chichu");
 	settings.Add("zenobiaSet", true, "Zenobia");
 	settings.Add("adamSet", true, "Fal'cie Adam");
 	settings.Add("caius2Set", true, "Caius: Beyond");
@@ -148,6 +153,11 @@ split
 	if (settings["faerylSet"] && old.faeryl == 0 && current.faeryl != 0) vars.time0 = current.time + 2300;
 	if (settings["mutantSet"] && old.mutant == 0 && current.mutant != 0) vars.time0 = current.time + 2300;
 	if (settings["caius1Set"] && old.caius1 == 0 && current.caius1 != 0) vars.time0 = current.time + 2300;
+	
+	// キチューはモーグリ投げで入手するためリザルト画面がない。入手した瞬間にSplit
+	// Chichu comes from the Moogle Throw with no results screen, so split the moment it is obtained
+	if (settings["chichuSet"] && (old.chichu & 0x08) == 0 && (current.chichu & 0x08) != 0) return true;
+	
 	if (settings["zenobiaSet"] && old.zenobia == 0 && current.zenobia != 0) vars.time0 = current.time + 2300;
 	if (settings["adamSet"] && old.adam == 0 && current.adam != 0) vars.time0 = current.time + 2300;
 	if (settings["caius2Set"] && old.caius2 == 0 && current.caius2 != 0) vars.time0 = current.time + 2300;
