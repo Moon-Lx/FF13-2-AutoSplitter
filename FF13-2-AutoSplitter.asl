@@ -92,9 +92,10 @@ startup
 
 start
 {
-	// New Game の難易度確定で画面のGUIが減る瞬間（英語版の値）
-	// GUI VB drop when the New Game difficulty is confirmed (English values)
-	if (old.guiVB == 31872 && current.guiVB == 31104)
+	// New Game の難易度確定で画面のGUIが減る瞬間（表示文字量が違うため言語ごとに値が異なる）
+	// GUI VB drop when the New Game difficulty is confirmed (values differ per language because of the text)
+	if ((old.guiVB == 31872 && current.guiVB == 31104)		// English
+		|| (old.guiVB == 25728 && current.guiVB == 24960))	// 日本語 / Japanese
 	{
 		return true;
 	}
