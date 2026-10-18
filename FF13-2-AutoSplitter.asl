@@ -44,6 +44,10 @@ state("ffxiii2img")
 	// Chichu obtained flag (bit 3); set the moment it is obtained by the Moogle Throw
 	byte chichu			: "ffxiii2img.exe", 0x04D51F64, 0x1451;
 	
+	// セーブデータ先頭8KB（ロード検知用）。ロードやタイトル復帰では数百バイトが一斉に書き換わる
+	// First 8 KB of the save data (load detection); loading or returning to the title rewrites hundreds of bytes at once
+	byte8192 saveHead	: "ffxiii2img.exe", 0x04D51F64, 0x0;
+	
 	// 直近の戦闘リザルトの戦利品（アイテムID）
 	// Spoils of the latest battle results (item ids)
 	string16 sp1				: "ffxiii2img.exe", 0x04D51BC4, 0x78;
@@ -65,6 +69,7 @@ startup
 	// Per-run state; also defined here because a script reload does not call onStart
 	vars.chaosCount = 0;
 	vars.chaosTime = 0u;
+	vars.loadTime = 0u;
 	
 	settings.Add("chaosSet", false, "Chaos Bahamut 1");
 	settings.Add("chaosBSet", false, "Chaos Bahamut 2");
@@ -95,6 +100,20 @@ startup
 
 }
 
+update
+{
+	// セーブデータが一斉に書き換わった（ロード・タイトル復帰）時刻を記録する。通常のプレイで変わるのは数バイト程度
+	// Remember when the save data is rewritten at once (load / back to title); normal play changes only a few bytes
+	byte[] before = old.saveHead, after = current.saveHead;
+	if (before != null && after != null && before.Length == after.Length)
+	{
+		int changed = 0;
+		for (int i = 0; i < after.Length; i++)
+			if (before[i] != after[i]) changed++;
+		if (changed >= 128) vars.loadTime = current.time;
+	}
+}
+
 start
 {
 	// New Game の難易度確定で画面のGUIが減る瞬間（表示文字量が違うため言語ごとに値が異なる）
@@ -116,6 +135,10 @@ onStart
 
 split
 {
+	// ロード直後（2秒以内）は撃破数やフラグがセーブから復元されているだけなので何もしない
+	// Within 2 s of a load, kills and flags are merely being restored from the save, so do nothing
+	if (current.time - vars.loadTime < 2000) return false;
+	
 	// 撃破・捕獲を検知すると vars.time0 にSplitを予約し、リザルト画面を抜けた時にSplitする
 	// A kill or capture arms a split in vars.time0; it fires when the results screen closes
 	
