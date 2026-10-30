@@ -71,31 +71,31 @@ startup
 	vars.chaosTime = 0u;
 	vars.loadTime = 0u;
 	
-	settings.Add("chaosSet", true, "Chaos Bahamut 1");
-	settings.Add("chaosBSet", true, "Chaos Bahamut 2");
+	settings.Add("chaosSet", false, "Chaos Bahamut 1");
+	settings.Add("chaosBSet", false, "Chaos Bahamut 2");
 	settings.Add("gogmagogASet", true, "Gogmagog Alpha");
 	settings.Add("gogmagogBSet", true, "Gogmagog Beta");
 	settings.Add("paradoxSet", true, "Paradox Alpha");
-	settings.Add("caitSet", true, "Monster Crystal Tutorial");
+	settings.Add("caitSet", false, "Monster Crystal Tutorial");
 	settings.Add("nektonSet", false, "Capture Nekton");
 	settings.Add("atlasSet", true, "Atlas");
 	settings.Add("aloeidaiSet", true, "Aloeidai");
-	settings.Add("gahongasSet", true, "Capture Gahongas");
+	settings.Add("gahongasSet", false, "Capture Gahongas");
 	settings.Add("royalSet", true, "Royal Ripeness");
 	settings.Add("miniflanSet", true, "Miniflans 1");
 	settings.Add("goblinSet", true, "Goblin Fragment");
 	settings.Add("faerylSet", true, "Faeryl");
 	settings.Add("mutantSet", true, "Mutantomato");
 	settings.Add("caius1Set", true, "Caius: Oerba");
-	settings.Add("chichuSet", true, "Capture Chichu");
+	settings.Add("chichuSet", false, "Capture Chichu");
 	settings.Add("zenobiaSet", true, "Zenobia");
 	settings.Add("adamSet", true, "Fal'cie Adam");
 	settings.Add("caius2Set", true, "Caius: Beyond");
 	settings.Add("gogmagog3Set", true, "Gogmagog Gamma");
 	settings.Add("pacosSet", true, "Pacos Twins");
-	settings.Add("chaos2Set", true, "Chaos Bahamut 3");
-	settings.Add("caius3Set", true, "Caius: Deck");
-	settings.Add("caius4Set", true, "Caius: Beach");
+	settings.Add("chaos2Set", false, "Chaos Bahamut 3");
+	settings.Add("caius3Set", false, "Caius: Deck");
+	settings.Add("caius4Set", false, "Caius: Beach");
 	settings.Add("jetSet", true, "Jet Bahamut (Final)");
 
 }
