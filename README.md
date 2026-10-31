@@ -112,6 +112,7 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 
 - 原作: Roosta — [blakehartley/FFXIII-2_autosplitter](https://github.com/blakehartley/FFXIII-2_autosplitter)
 - 改修: Moon-Lx
+- ライセンス: MIT（[LICENSE](LICENSE)）
 
 ---
 
@@ -220,3 +221,4 @@ In settings order (route order).
 
 - Original: Roosta — [blakehartley/FFXIII-2_autosplitter](https://github.com/blakehartley/FFXIII-2_autosplitter)
 - Modified by: Moon-Lx
+- License: MIT (see [LICENSE](LICENSE))
