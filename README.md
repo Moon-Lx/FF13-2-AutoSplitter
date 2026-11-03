@@ -26,13 +26,23 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 
 ### 導入方法
 
-1. `FF13-2-AutoSplitter.asl` をダウンロードし、任意のフォルダに保存します。
-2. LiveSplit を右クリック →「Edit Layout...」→「+」→「Control」→「Scriptable Auto Splitter」を追加します。
-3. 追加したコンポーネントの「Layout Settings」で、Script Path に保存した `.asl` を指定します。
-4. 「Start」と「Split」にチェックを入れ、「Advanced」で使うスプリットにチェックを入れます（下の表を参照）。
-5. スプリットファイルとレイアウトを保存します。
+本スクリプトは LiveSplit の公式オートスプリッター一覧に登録されているので、スプリットの編集画面で有効にするだけで使えます。
 
-> **注意**: スプリットの編集画面（Edit Splits）でオートスプリッターを「Activate」すると、LiveSplit は公式配布版（元版）のスクリプトをダウンロードしてそちらを使います。本スクリプトを使うときは「Deactivate」にしてください。両方が有効だと、スプリットが二重になったり元版の動作になったりします。
+1. LiveSplit を右クリック →「Edit Splits...」を開きます。
+2. 「Game Name」を `Final Fantasy XIII-2` にします。
+3. 表示される「Activate」ボタンを押します。本スクリプトが自動でダウンロードされます。
+4. 「Settings」を開き、「Start」と「Split」にチェックを入れ、「Advanced」で使うスプリットにチェックを入れます（下の表を参照）。
+5. 「OK」を押して、スプリットファイルを保存します。
+
+有効化のたびに（スプリットを開いたときなど）最新版が自動でダウンロードされるので、手動で更新する必要はありません。
+
+#### 手元のファイルを使う場合（改造・テスト用）
+
+1. `FF13-2-AutoSplitter.asl` を任意のフォルダに保存します。
+2. LiveSplit を右クリック →「Edit Layout...」→「+」→「Control」→「Scriptable Auto Splitter」を追加し、「Layout Settings」の Script Path に保存した `.asl` を指定します。
+3. スプリットの編集画面のオートスプリッターは「Deactivate」にしてください。両方が有効だと、スプリットが二重になります。
+
+> **注意**: スプリットの編集画面側の「Settings」で手元のファイルを指定しても、次に有効化されたときにダウンロード版へ戻ります。手元のファイルを使うときは、上の「Edit Layout」の方法を使ってください。
 
 ### スプリット一覧
 
@@ -135,13 +145,23 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 
 ### Installation
 
-1. Download `FF13-2-AutoSplitter.asl` and save it anywhere.
-2. Right-click LiveSplit → "Edit Layout..." → "+" → "Control" → "Scriptable Auto Splitter".
-3. In the component's "Layout Settings", set Script Path to the saved `.asl` file.
-4. Tick "Start" and "Split", then choose the splits you use under "Advanced" (see the table below).
-5. Save your splits and layout.
+This script is registered in LiveSplit's official auto splitter list, so you only need to activate it in the Splits Editor.
 
-> **Note**: If you "Activate" the auto splitter in the Splits Editor, LiveSplit downloads the original official script and runs that instead. Set it to "Deactivate" when you use this script; with both active you get double splits or the original behaviour.
+1. Right-click LiveSplit → "Edit Splits...".
+2. Set "Game Name" to `Final Fantasy XIII-2`.
+3. Click the "Activate" button that appears. LiveSplit downloads this script automatically.
+4. Open "Settings", tick "Start" and "Split", then choose the splits you use under "Advanced" (see the table below).
+5. Click "OK" and save your splits.
+
+LiveSplit downloads the latest version every time the auto splitter is activated (for example when you open your splits), so there is nothing to update manually.
+
+#### Using a local copy (for modding or testing)
+
+1. Save `FF13-2-AutoSplitter.asl` anywhere.
+2. Right-click LiveSplit → "Edit Layout..." → "+" → "Control" → "Scriptable Auto Splitter", and set Script Path in its "Layout Settings" to the saved `.asl` file.
+3. Deactivate the auto splitter in the Splits Editor; with both active you get double splits.
+
+> **Note**: Pointing the Splits Editor's auto splitter "Settings" at a local file does not last; it switches back to the downloaded script the next time it is activated. Use the "Edit Layout" method above for local files.
 
 ### Splits
 
