@@ -19,7 +19,7 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 
 | 機能 | 内容 |
 |---|---|
-| 自動スタート | New Game の難易度確定（speedrun.com の計測開始地点）で開始。英語版・日本語版に対応 |
+| 自動スタート | New Game の難易度確認で「はい」を選んだ時（speedrun.com の計測開始地点）に開始。英語版・日本語版に対応 |
 | 自動スプリット | ボス撃破・モンスター捕獲・キチュー入手など。設定画面で項目ごとに ON/OFF |
 | 最終スプリット | Jet Bahamut 後のリザルト画面を抜けた時（speedrun.com の計測終了地点） |
 | ロード対策 | セーブのロードやタイトル画面への復帰の直後は、誤ってスプリットしない |
@@ -84,7 +84,7 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 
 ### 既知の制限・注意
 
-- 自動スタートは英語版と日本語版の値にのみ対応しています。その他の言語では開始しない可能性があります（技術メモを参照）。
+- 自動スタートは英語版と日本語版の値にのみ対応しています。その他の言語では開始しない可能性があります。英語版は元版の値（1つの難易度分）しかないため、もう一方の難易度では開始しない可能性があります（技術メモを参照）。
 - 序章の途中から手動でタイマーを開始すると、Chaos Bahamut 1 / 2 の判定がずれることがあります。
 - 撃破前のセーブをロードして同じボスを倒し直すと、もう一度スプリットします。
 - タイマーをリセットすると、実行待ちのスプリットは破棄されます。
@@ -97,19 +97,21 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 |---|---|---|
 | `guiVB` | `[exe+0x3921EC]+0x4`（= `0x0514DE04`） | GUI頂点バッファの使用量（byte）。ゲーム内のデバッグ表示 `GUI VB=%d` と同じ値で、画面上の文字量で決まるため言語によって値が変わる |
 | `time` | `[exe+0x1DA2A0]`（= `0x02522EFC`） | `timeGetTime()` の値（ms） |
+| `titleDemo` | `[exe+0x04D54AB4]`（= `0x05154AB4`） | タイトル画面の放置デモの開始時刻（ms）。タイトル画面の間だけ値が入り、New Game の開始やデモの再生でタイトル画面を抜けると 0 になる |
 | `target` | `[exe+0x04D51BC4]+0x3C` | 直近の戦闘リザルトの戦闘ID（915000 = 序章のカオス・バハムート、673000 = Jet Bahamut） |
 | `sp1`〜`sp4` | `[exe+0x04D51BC4]+0x78 / 0x90 / 0xA8 / 0xC0` | 戦利品のアイテムID（例: `mcr_k273`） |
 | 図鑑 | `[exe+0x04D51F64]+オフセット` | ボスごとの撃破記録（未撃破は0） |
 | `chichu` | `[exe+0x04D51F64]+0x1451` のビット3 | キチュー入手フラグ（同時に +0x145D のビット3も立ち、パックに ID `k677` のモンスターが追加される） |
 | `saveHead` | `[exe+0x04D51F64]` から 8KB | ロード検知用。ロード時は約480バイト、通常プレイ中は十数バイト以下しか変わらない |
 
-- **Start**: 難易度を確定した瞬間に GUI 表示が 768 バイト減ります（英語版 31872→31104、日本語版 25728→24960）。他の言語に対応するには、その言語での値を計測して `start` に追加します。
+- **Start**: 難易度確認（はい／いいえ）を閉じると GUI 表示が 768 バイト減ります（英語版 31872→31104、日本語版 25728→24960 / 25920→25152。難易度によって値が異なる）。「はい」の場合はその直後にタイトル画面が終わって `titleDemo` が 0 になるので、GUI が減ってから 1 秒以内に `titleDemo` が 0 になったら開始します。他の言語に対応するには、その言語での値を計測して `start` に追加します。
 - **Split**: 撃破・捕獲を検知すると `vars.time0` に予約し、リザルト画面を抜けた時（`guiVB` が 25600 未満に減る／GUI 非表示／`battle_base` の変化）に実行します。
 - **ロード対策**: `saveHead` の 128 バイト以上が一度に変わったらロードとみなし、その後 2 秒間は判定しません。
 
 ### 元版からの変更点
 
 - 日本語版で自動スタートしない不具合を修正
+- 難易度確認で「いいえ」を選んでもタイマーが開始する不具合を修正
 - 「Capture Chichu」（キチュー入手）を追加
 - 「Chaos Bahamut 1 & 2」を「Chaos Bahamut 1」「Chaos Bahamut 2」に分割し、終盤のものを「Chaos Bahamut 3」に改名
 - 最終スプリット（Jet Bahamut）を設定項目として表示
@@ -138,7 +140,7 @@ An auto splitter for the Steam version of FINAL FANTASY XIII-2 for [LiveSplit](h
 
 | Feature | Description |
 |---|---|
-| Auto start | Starts when the New Game difficulty is confirmed (the speedrun.com start point). English and Japanese |
+| Auto start | Starts when "Yes" is chosen on the New Game difficulty confirmation (the speedrun.com start point). English and Japanese |
 | Auto split | Boss kills, monster captures, obtaining Chichu and more; each can be toggled in the settings |
 | Final split | When the results screen after Jet Bahamut is closed (the speedrun.com end point) |
 | Load guard | No false splits right after loading a save or returning to the title screen |
@@ -203,7 +205,7 @@ In settings order (route order).
 
 ### Known limitations
 
-- Auto start only knows the English and Japanese values; other languages may not start (see the technical notes).
+- Auto start only knows the English and Japanese values; other languages may not start. The English values come from the original script and cover one difficulty only, so the other difficulty may not start (see the technical notes).
 - If you start the timer manually in the middle of the prologue, Chaos Bahamut 1 / 2 may be off by one.
 - Loading a save from before a boss and killing it again splits again.
 - Resetting the timer discards any pending split.
@@ -216,19 +218,21 @@ In settings order (route order).
 |---|---|---|
 | `guiVB` | `[exe+0x3921EC]+0x4` (= `0x0514DE04`) | GUI vertex buffer usage in bytes; the same value as the game's debug overlay `GUI VB=%d`. It depends on the on-screen text, so it differs per language |
 | `time` | `[exe+0x1DA2A0]` (= `0x02522EFC`) | `timeGetTime()` in milliseconds |
+| `titleDemo` | `[exe+0x04D54AB4]` (= `0x05154AB4`) | Time (ms) the title screen starts its idle demo. Set only while the title screen is up; 0 once it ends (New Game or the demo movie) |
 | `target` | `[exe+0x04D51BC4]+0x3C` | Battle id of the latest battle results (915000 = prologue Chaos Bahamut, 673000 = Jet Bahamut) |
 | `sp1`–`sp4` | `[exe+0x04D51BC4]+0x78 / 0x90 / 0xA8 / 0xC0` | Spoils item ids (e.g. `mcr_k273`) |
 | Bestiary | `[exe+0x04D51F64]+offset` | Kill record per boss (0 = not killed) |
 | `chichu` | bit 3 of `[exe+0x04D51F64]+0x1451` | Chichu obtained flag (bit 3 of +0x145D is set at the same time, and a monster with id `k677` is added to the pack) |
 | `saveHead` | 8 KB from `[exe+0x04D51F64]` | Load detection; a load changes about 480 bytes, normal play only a dozen or so |
 
-- **Start**: confirming the difficulty drops the GUI usage by 768 bytes (English 31872→31104, Japanese 25728→24960). To support another language, measure its values and add them to `start`.
+- **Start**: closing the difficulty confirmation (Yes / No) drops the GUI usage by 768 bytes (English 31872→31104; Japanese 25728→24960 or 25920→25152 depending on the difficulty). After "Yes" the title screen ends right away and `titleDemo` becomes 0, so the timer starts when `titleDemo` becomes 0 within 1 second of that drop. To support another language, measure its values and add them to `start`.
 - **Split**: a kill or capture arms a split in `vars.time0`, which fires when the results screen closes (`guiVB` drops below 25600, no GUI is drawn, or `battle_base` changes).
 - **Load guard**: when 128 bytes or more of `saveHead` change at once it is treated as a load, and nothing is checked for the next 2 seconds.
 
 ### Changes from the original
 
 - Fixed auto start not working on the Japanese version
+- Fixed the timer starting when "No" was chosen on the difficulty confirmation
 - Added "Capture Chichu" (obtaining Chichu)
 - Split "Chaos Bahamut 1 & 2" into "Chaos Bahamut 1" and "Chaos Bahamut 2", and renamed the late-game one to "Chaos Bahamut 3"
 - The final split (Jet Bahamut) is now shown as a setting

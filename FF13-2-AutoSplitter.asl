@@ -12,6 +12,10 @@ state("ffxiii2img")
 	uint time			: "ffxiii2img.exe", 0x001DA2A0, 0x0;
 	int battle_base		: "ffxiii2img.exe", 0x0211E3E0, 0x14, 0x0, 0x0;
 	
+	// タイトル画面の放置デモの開始時刻(ms)。タイトル画面を抜ける（New Game開始・デモ再生）と0になる
+	// Time (ms) the title screen starts its idle demo; becomes 0 when the title screen ends (New Game or the demo)
+	uint titleDemo		: "ffxiii2img.exe", 0x04D54AB4;
+	
 	// 直近の戦闘リザルトの戦闘ID
 	// Battle id of the latest battle results
 	int target			: "ffxiii2img.exe", 0x04D51BC4, 0x3C;
@@ -61,6 +65,9 @@ init
 	// 予約中のSplitの実行可能時刻(ms)。最大値は予約なし
 	// Time (ms) after which the armed split may fire; max value means none is armed
 	vars.time0 = uint.MaxValue;
+	// 難易度確認（はい／いいえ）を閉じた時刻(ms)
+	// Time (ms) the difficulty confirmation (Yes / No) was closed
+	vars.dialogTime = 0u;
 }
 
 startup
@@ -116,13 +123,18 @@ update
 
 start
 {
-	// New Game の難易度確定で画面のGUIが減る瞬間（表示文字量が違うため言語ごとに値が異なる）
-	// GUI VB drop when the New Game difficulty is confirmed (values differ per language because of the text)
-	if ((old.guiVB == 31872 && current.guiVB == 31104)		// English
-		|| (old.guiVB == 25728 && current.guiVB == 24960))	// 日本語 / Japanese
+	// 難易度確認（はい／いいえ）を閉じるとGUIが768バイト減る（表示文字量が違うため言語・難易度ごとに値が異なる）
+	// Closing the difficulty confirmation (Yes / No) drops the GUI VB by 768 bytes (values differ per language and difficulty)
+	if ((old.guiVB == 31872 && current.guiVB == 31104)			// English
+		|| (old.guiVB == 25728 && current.guiVB == 24960)		// 日本語 / Japanese
+		|| (old.guiVB == 25920 && current.guiVB == 25152))		// 日本語 / Japanese
 	{
-		return true;
+		vars.dialogTime = current.time;
 	}
+	
+	// 「はい」ならその直後にタイトル画面が終わり titleDemo が0になる。「いいえ」では0にならない
+	// "Yes" ends the title screen right away and titleDemo becomes 0; "No" leaves it as is
+	return old.titleDemo != 0 && current.titleDemo == 0 && current.time - vars.dialogTime < 1000;
 }
 
 onStart
